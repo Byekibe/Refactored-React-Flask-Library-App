@@ -1,18 +1,28 @@
-import mysql.connector as mysql
+import mysql.connector
+from mysql.connector import errorcode
+import os
 
-class ConnectDB:
-    def __init__(self, host, user, password, database):
-        self.host = host
-        self.user = user
-        self.password = password
-        self.database = database
 
-    def connection(self):
-            try:
-                db = mysql.connect(host=self.host, user=self.user, password=self.password, database=self.database)
-                print("Connected Successfully")
-            except mysql.Error == "NameError":
-                print(f"Check your connection credentials")
-            else:
-                print("Connection NOT successful")
-            return {"message": "Guess it's connected!!"}
+def connect_to_db():
+    try:
+        conn = mysql.connector.connect(
+            user=os.getenv("USER"),
+            password=os.getenv("PASSWORD"),
+            host=os.getenv("HOST"),
+            database=os.getenv("DATABASE"),
+            connect_timeout=28800
+        )
+        print(f"Connected to {os.getenv('DATABASE')} successfuly")
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Something is wrong with your user name or password")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Database does not exist")
+        else:
+            print(err)
+    else:
+        print("Connected...Please close connection if you are not using it!!")
+    
+    return conn  
+                  
+     
