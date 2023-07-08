@@ -2,6 +2,7 @@ from flask import Flask, request
 from models import connect_to_db
 import mysql.connector
 from mysql.connector import errorcode
+from flask_cors import CORS
 
 app = Flask(__name__)
 
