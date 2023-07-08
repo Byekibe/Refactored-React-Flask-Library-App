@@ -5,6 +5,7 @@ from mysql.connector import errorcode
 from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route("/data")
 def home():
@@ -14,7 +15,6 @@ def home():
         cursor = conn.cursor()
         cursor.execute(query)
         data = cursor.fetchall()
-        print(data)
     except mysql.connector.Error as err:
         print(err)
     return {"data": data}
